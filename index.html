@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Engineering Assistant</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #0b1020;
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    padding: 22px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #29314a;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+    color: #8b9cff;
+}
+
+.hero {
+    text-align: center;
+    padding: 65px 20px 35px;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 48px);
+    margin-bottom: 15px;
+}
+
+.hero h1 span {
+    color: #8b9cff;
+}
+
+.hero p {
+    color: #aab2c5;
+    line-height: 1.7;
+}
+
+.container {
+    max-width: 850px;
+    margin: 20px auto 60px;
+    padding: 30px;
+    background: #151d32;
+    border: 1px solid #293653;
+    border-radius: 18px;
+}
+
+label {
+    display: block;
+    margin: 18px 0 9px;
+    font-weight: bold;
+}
+
+textarea, select {
+    width: 100%;
+    padding: 14px;
+    background: #0c1427;
+    border: 1px solid #35415f;
+    border-radius: 9px;
+    color: white;
+    font-size: 15px;
+    outline: none;
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+textarea:focus, select:focus {
+    border-color: #8999ff;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 9px;
+    padding: 14px 20px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.generate {
+    width: 100%;
+    margin-top: 25px;
+    background: linear-gradient(90deg, #6578ff, #a16bff);
+    color: white;
+}
+
+.generate:hover {
+    opacity: 0.9;
+}
+
+.results {
+    display: none;
+    margin-top: 30px;
+}
+
+.result-box {
+    background: #0c1427;
+    border: 1px solid #35415f;
+    border-radius: 10px;
+    padding: 18px;
+    margin-top: 15px;
+}
+
+.result-box h3 {
+    margin-bottom: 12px;
+    color: #a5b1ff;
+}
+
+.result-text {
+    color: #d4daea;
+    white-space: pre-wrap;
+    line-height: 1.7;
+}
+
+.copy {
+    margin-top: 15px;
+    background: #27365c;
+    color: white;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #8d99b2;
+    border-top: 1px solid #29314a;
+}
+
+@media(max-width:600px) {
+    .row {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .hero {
+        padding-top: 45px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✦ PromptAI</div>
+    <div>AI Prompt Assistant</div>
+</header>
+
+<section class="hero">
+    <h1>Build Better <span>AI Prompts</span></h1>
+    <p>
+        Transform your simple ideas into professional,
+        detailed and powerful AI prompts.
+    </p>
+</section>
+
+<main class="container">
+
+    <h2>Prompt Engineering Assistant</h2>
+    <p style="color:#aab2c5;margin-top:8px">
+        Describe your idea and let the assistant improve it.
+    </p>
+
+    <label for="idea">Your Basic Prompt</label>
+    <textarea id="idea"
+    placeholder="Example: Make a website for my business..."></textarea>
+
+    <div class="row">
+        <div>
+            <label for="platform">AI Platform</label>
+            <select id="platform">
+                <option>ChatGPT</option>
+                <option>Google Gemini</option>
+                <option>Claude</option>
+                <option>Microsoft Copilot</option>
+                <option>Midjourney</option>
+                <option>Other AI</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="category">Prompt Category</label>
+            <select id="category">
+                <option>General</option>
+                <option>Website Development</option>
+                <option>Programming</option>
+                <option>Image Generation</option>
+                <option>Business</option>
+                <option>Marketing</option>
+                <option>Education</option>
+                <option>Research</option>
+                <option>Content Writing</option>
+                <option>Automation</option>
+            </select>
+        </div>
+    </div>
+
+    <label for="style">Output Style</label>
+    <select id="style">
+        <option>Professional</option>
+        <option>Detailed</option>
+        <option>Creative</option>
+        <option>Simple and Clear</option>
+        <option>Technical</option>
+    </select>
+
+    <button class="generate" onclick="generatePrompt()">
+        ✨ Generate Improved Prompt
+    </button>
+
+    <section class="results" id="results">
+
+        <h2 style="margin-top:25px">Your Optimized Prompts</h2>
+
+        <div class="result-box">
+            <h3>1. Improved Prompt</h3>
+            <div class="result-text" id="improved"></div>
+            <button class="copy" onclick="copyText('improved')">
+                Copy Improved Prompt
+            </button>
+        </div>
+
+        <div class="result-box">
+            <h3>2. Advanced Professional Prompt</h3>
+            <div class="result-text" id="advanced"></div>
+            <button class="copy" onclick="copyText('advanced')">
+                Copy Advanced Prompt
+            </button>
+        </div>
+
+        <div class="result-box">
+            <h3>3. Optimization Notes</h3>
+            <div class="result-text" id="notes"></div>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 PromptAI Assistant | Built for Better AI Experiences
+</footer>
+
+<script>
+function generatePrompt() {
+
+    const idea = document.getElementById("idea").value.trim();
+    const platform = document.getElementById("platform").value;
+    const category = document.getElementById("category").value;
+    const style = document.getElementById("style").value;
+
+    if (!idea) {
+        alert("Please enter your basic prompt first!");
+        return;
+    }
+
+    const improved =
+`Act as an expert in ${category}.
+
+Your task is to help me with the following objective:
+
+${idea}
+
+Target AI Platform: ${platform}
+Required Output Style: ${style}
+
+Instructions:
+1. Understand my objective.
+2. Follow my requirements carefully.
+3. Provide accurate and relevant information.
+4. Organize the response clearly.
+5. Avoid unnecessary complexity.
+6. Do not invent missing facts.
+
+Deliver a complete and useful result.`;
+
+    const advanced =
+`ROLE:
+You are a highly experienced ${category} specialist and professional AI assistant.
+
+CONTEXT:
+I need a high-quality result based on my idea.
+
+ORIGINAL OBJECTIVE:
+${idea}
+
+TARGET PLATFORM:
+${platform}
+
+TASK:
+Analyze the objective and develop the best possible solution.
+
+REQUIREMENTS:
+- Understand the user's actual intention.
+- Identify important missing information.
+- Use professional and clear language.
+- Apply logical step-by-step reasoning.
+- Include relevant context and constraints.
+- Maintain factual accuracy.
+- Never assume or invent unknown information.
+- Optimize the output for ${platform}.
+
+OUTPUT FORMAT:
+1. Introduction or understanding of the task.
+2. Main solution.
+3. Important details and recommendations.
+4. Final polished result.
+
+QUALITY STANDARD:
+The final output must be ${style.toLowerCase()}, practical, accurate, well-organized and ready to use.
+
+Complete the task while preserving the original objective.`;
+
+    document.getElementById("improved").textContent = improved;
+    document.getElementById("advanced").textContent = advanced;
+
+    document.getElementById("notes").textContent =
+`• Added a clear expert role.
+• Defined the original objective.
+• Specified the target AI platform.
+• Added practical instructions and constraints.
+• Organized the expected output.
+• Added quality requirements.
+• Improved clarity and usability.`;
+
+    document.getElementById("results").style.display = "block";
+
+    document.getElementById("results").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function copyText(id) {
+    const text = document.getElementById(id).textContent;
+
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Prompt copied successfully!");
+    }).catch(() => {
+        alert("Copy failed. Please select and copy the text manually.");
+    });
+}
+</script>
+
+</body>
+</html>
+              
